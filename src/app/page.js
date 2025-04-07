@@ -17,7 +17,6 @@ import Dashboard from './dashboard/page';
 import CodeEditor from './components/CodeEditor';
 import ProblemSection from './components/ProblemMetaData';
 
-// Import AI-related icons from react-icons
 import { FaRobot, FaBrain, FaComments } from 'react-icons/fa';
 
 //clerk

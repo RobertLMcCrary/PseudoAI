@@ -11,8 +11,10 @@ function Contact() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const subject = encodeURIComponent('Contact Form Submission');
-        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-        const mailtoLink = `mailto:rlmccrary1210@gmail.com?subject=${subject}&body=${body}`;
+        const body = encodeURIComponent(
+            `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+        );
+        const mailtoLink = `mailto:pseudoaidev@gmail.com?subject=${subject}&body=${body}`;
         window.location.href = mailtoLink; // Redirect to mailto link
     };
 
@@ -20,14 +22,26 @@ function Contact() {
         <div className="bg-gray-900 text-white min-h-screen">
             <Navbar />
             <header className="bg-gradient-to-r from-blue-500 to-purple-700 py-16 text-center">
-                <h1 className="text-4xl md:text-6xl font-bold mb-4">Contact Us</h1>
-                <p className="text-lg md:text-xl text-gray-200">We would love to hear your feedback!</p>
+                <h1 className="text-4xl md:text-6xl font-bold mb-4">
+                    Contact Us
+                </h1>
+                <p className="text-lg md:text-xl text-gray-200">
+                    We would love to hear your feedback!
+                </p>
             </header>
             <main className="py-16 px-4 sm:px-8 md:px-16">
                 <section className="max-w-2xl mx-auto">
-                    <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <form
+                        onSubmit={handleSubmit}
+                        className="bg-gray-800 p-6 rounded-lg shadow-lg"
+                    >
                         <div className="mb-4">
-                            <label htmlFor="name" className="block text-sm font-semibold mb-2">Name</label>
+                            <label
+                                htmlFor="name"
+                                className="block text-sm font-semibold mb-2"
+                            >
+                                Name
+                            </label>
                             <input
                                 type="text"
                                 id="name"
@@ -38,7 +52,12 @@ function Contact() {
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="email" className="block text-sm font-semibold mb-2">Email</label>
+                            <label
+                                htmlFor="email"
+                                className="block text-sm font-semibold mb-2"
+                            >
+                                Email
+                            </label>
                             <input
                                 type="email"
                                 id="email"
@@ -49,7 +68,12 @@ function Contact() {
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="message" className="block text-sm font-semibold mb-2">Message</label>
+                            <label
+                                htmlFor="message"
+                                className="block text-sm font-semibold mb-2"
+                            >
+                                Message
+                            </label>
                             <textarea
                                 id="message"
                                 value={message}

@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-// Function to run JavaScript locally
+//function to run JavaScript locally
 function runJavaScriptLocally(code, testCases, functionCall) {
     return testCases.map((testCase, index) => {
         try {
