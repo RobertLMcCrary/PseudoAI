@@ -1,6 +1,6 @@
 //testing the connection to mongodb for problems database
 const mongoose = require('mongoose');
-const connectMongoDB = require('../../lib/mongodb');
+const connectMongoDB = require('../../lib/mongodb').default;
 
 jest.mock('mongoose', () => ({
     connect: jest.fn(),
