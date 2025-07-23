@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 
 function calculateRank(problemsSolved) {
@@ -12,8 +13,8 @@ function calculateRank(problemsSolved) {
     return 'Novice';
 }
 
-export async function PUT(request, { params }) {
-    const id = params.id;
+export async function PUT(request, context) {
+    const { id } = context.params;
     const client = await MongoClient.connect(process.env.MONGO_URI);
     const db = client.db('PseudoAI');
     const Users = db.collection('Users');
@@ -32,7 +33,7 @@ export async function PUT(request, { params }) {
 }
 
 export async function GET(request, { params }) {
-    const id = await params.id;
+    const id = params.id;
     if (!id) {
         // This check is good practice, though for a dynamic route like [id],
         // 'id' should always be present.

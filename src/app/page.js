@@ -20,7 +20,7 @@ import ProblemSection from './components/ProblemMetaData';
 import { FaRobot, FaBrain, FaComments } from 'react-icons/fa';
 
 //clerk
-import { SignUpButton, SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { SignUpButton, SignInButton, SignedIn, SignedOut, useAuth } from '@clerk/nextjs';
 
 //custom hook for viewport width
 function useViewportWidth() {
@@ -80,6 +80,8 @@ const demoTwoSum = {
 };
 
 function Home() {
+    const { isLoaded } = useAuth();
+    if (!isLoaded) return null; // or a loading spinner
     //state management for screen width
     const viewportWidth = useViewportWidth();
 
@@ -126,13 +128,26 @@ function Home() {
     // initialize pyodide to run python code in the demo editor (executes on the frontend only)
     useEffect(() => {
         if (selectedLanguage === 'python' && !pyodide) {
-            const loadPyodide = async () => {
-                const pyodideInstance = await window.loadPyodide({
-                    indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
-                });
-                setPyodide(pyodideInstance);
+            const loadPyodideScriptAndInstance = async () => {
+                // Check if the script is already loaded
+                if (!window.loadPyodide) {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+                    script.onload = async () => {
+                        const pyodideInstance = await window.loadPyodide({
+                            indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
+                        });
+                        setPyodide(pyodideInstance);
+                    };
+                    document.body.appendChild(script);
+                } else {
+                    const pyodideInstance = await window.loadPyodide({
+                        indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
+                    });
+                    setPyodide(pyodideInstance);
+                }
             };
-            loadPyodide();
+            loadPyodideScriptAndInstance();
         }
     }, [selectedLanguage, pyodide]);
 

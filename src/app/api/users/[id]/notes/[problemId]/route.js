@@ -1,8 +1,7 @@
 import { MongoClient } from 'mongodb';
 
-export async function GET(req, { params }) {
-    const userId = await params.id;
-    const problemId = await params.problemId;
+export async function GET(request, context) {
+    const { userId, problemId } = context.params;
 
     try {
         const client = await MongoClient.connect(process.env.MONGO_URI);
@@ -25,9 +24,8 @@ export async function GET(req, { params }) {
     }
 }
 
-export async function POST(req, { params }) {
-    const userId = await params.id;
-    const problemId = await params.problemId;
+export async function POST(req, context) {
+    const { id, problemId } = context.params;
     const { notes: noteContent } = await req.json();
 
     try {
@@ -36,7 +34,7 @@ export async function POST(req, { params }) {
         const Users = db.collection('Users');
 
         // Single atomic operation to update notes
-        const result = await Users.updateOne({ clerkId: userId }, [
+        const result = await Users.updateOne({ clerkId: id }, [
             {
                 $set: {
                     notes: {
