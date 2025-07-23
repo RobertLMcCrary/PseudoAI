@@ -31,14 +31,15 @@ function Pricing() {
                     />
                     <PricingCard
                         title="Pro Plan"
-                        price="$10/month"
+                        price="$1/month"
                         features={[
                             'Unlimited access to all features',
                             'Realistic Mock Interview Simulation',
                             'Live Code Editing With Friends',
                         ]}
-                        buttonText="Comming Soon"
+                        buttonText="Coming Soon"
                         buttonStyle="bg-purple-600 text-white hover:bg-purple-500"
+                        link="/checkout"
                     />
                 </section>
             </main>
@@ -70,13 +71,20 @@ function PricingCard({
                     </li>
                 ))}
             </ul>
-            <a href={link}>
-                <SignInButton
-                    className={`px-6 py-3 rounded-full font-semibold transition ${buttonStyle}`}
-                >
-                    {buttonText}
-                </SignInButton>
-            </a>
+            {buttonText === "Start for Free" ? (
+        <SignInButton
+            className={`px-6 py-3 rounded-full font-semibold transition ${buttonStyle}`}
+        >
+            {buttonText}
+        </SignInButton>
+    ) : (
+        <a
+            href={link}
+            className={`inline-block px-6 py-3 rounded-full font-semibold transition ${buttonStyle}`}
+        >
+            {buttonText}
+        </a>
+    )}
         </div>
     );
 }

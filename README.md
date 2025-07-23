@@ -30,6 +30,7 @@ PseudoAI is a modern technical interview preparation platform that combines AI a
 
 ## Project Structure
 
+
 ### Frontend Pages
 - `/` - Dashboard with progress overview
 - `/problems` - Problem listing

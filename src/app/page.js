@@ -20,7 +20,7 @@ import ProblemSection from './components/ProblemMetaData';
 import { FaRobot, FaBrain, FaComments } from 'react-icons/fa';
 
 //clerk
-import { SignUpButton, SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { SignUpButton, SignInButton, SignedIn, SignedOut, useAuth } from '@clerk/nextjs';
 
 //custom hook for viewport width
 function useViewportWidth() {
@@ -80,11 +80,10 @@ const demoTwoSum = {
 };
 
 function Home() {
-    //state management for screen width
+    const { isLoaded } = useAuth();
     const viewportWidth = useViewportWidth();
-
-    //state management for the demo code editor
     const [code, setCode] = useState(demoTwoSum.starterCodes.python);
+
     const [isRunning, setIsRunning] = useState(false);
     const [results, setResults] = useState(null);
     const [selectedLanguage, setSelectedLanguage] = useState('python');
@@ -126,13 +125,26 @@ function Home() {
     // initialize pyodide to run python code in the demo editor (executes on the frontend only)
     useEffect(() => {
         if (selectedLanguage === 'python' && !pyodide) {
-            const loadPyodide = async () => {
-                const pyodideInstance = await window.loadPyodide({
-                    indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
-                });
-                setPyodide(pyodideInstance);
+            const loadPyodideScriptAndInstance = async () => {
+                // Check if the script is already loaded
+                if (!window.loadPyodide) {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+                    script.onload = async () => {
+                        const pyodideInstance = await window.loadPyodide({
+                            indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
+                        });
+                        setPyodide(pyodideInstance);
+                    };
+                    document.body.appendChild(script);
+                } else {
+                    const pyodideInstance = await window.loadPyodide({
+                        indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
+                    });
+                    setPyodide(pyodideInstance);
+                }
             };
-            loadPyodide();
+            loadPyodideScriptAndInstance();
         }
     }, [selectedLanguage, pyodide]);
 
@@ -224,6 +236,7 @@ function Home() {
             setLoading(false);
         }
     };
+    if (!isLoaded) return null; // or a loading spinner
 
     return (
         <div className="bg-gray-900 text-white min-h-screen">

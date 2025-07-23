@@ -18,6 +18,7 @@ import {
 import { useAuth } from '@clerk/nextjs';
 
 import { Toaster } from 'react-hot-toast';
+import StripeProviderWrapper from '@/components/StripeProviderWrapper';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -38,24 +39,24 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <ClerkProvider>
-            <html lang="en">
-                <head>
-                    <link rel="icon" href="/favicon.ico" />
-                </head>
-                <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-                >
-                    <Toaster position="top-right" />
-                    {children}
-                    <Analytics />
-                    <SpeedInsights />
-                    <script
-                        src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"
-                        async
-                    ></script>
-                </body>
-            </html>
-        </ClerkProvider>
+      <html lang="en">
+        <head>
+          <link rel="icon" href="/favicon.ico" />
+        </head>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <ClerkProvider dynamic>
+            <StripeProviderWrapper>
+              <Toaster position="top-right" />
+              {children}
+              <Analytics />
+              <SpeedInsights />
+              <script
+                src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"
+                async
+              ></script>
+            </StripeProviderWrapper>
+          </ClerkProvider>
+        </body>
+      </html>
     );
-}
+  }
