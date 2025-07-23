@@ -14,7 +14,7 @@ function calculateRank(problemsSolved) {
 }
 
 export async function PUT(request, context) {
-    const { id } = context.params;
+    const { id } = await context.params;
     const client = await MongoClient.connect(process.env.MONGO_URI);
     const db = client.db('PseudoAI');
     const Users = db.collection('Users');
@@ -32,8 +32,8 @@ export async function PUT(request, context) {
     });
 }
 
-export async function GET(request, { params }) {
-    const id = params.id;
+export async function GET(request, context) {
+    const { id } = await context.params;
     if (!id) {
         // This check is good practice, though for a dynamic route like [id],
         // 'id' should always be present.

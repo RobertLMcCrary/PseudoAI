@@ -39,26 +39,24 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <ClerkProvider dynamic>
+      <html lang="en">
+        <head>
+          <link rel="icon" href="/favicon.ico" />
+        </head>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <ClerkProvider dynamic>
             <StripeProviderWrapper>
-            <html lang="en">
-                <head>
-                    <link rel="icon" href="/favicon.ico" />
-                </head>
-                <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-                >
-                    <Toaster position="top-right" />
-                    {children}
-                    <Analytics />
-                    <SpeedInsights />
-                    <script
-                        src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"
-                        async
-                    ></script>
-                </body>
-            </html>
+              <Toaster position="top-right" />
+              {children}
+              <Analytics />
+              <SpeedInsights />
+              <script
+                src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"
+                async
+              ></script>
             </StripeProviderWrapper>
-        </ClerkProvider>
+          </ClerkProvider>
+        </body>
+      </html>
     );
-}
+  }

@@ -11,14 +11,14 @@ if (!global._mongoClientPromise) {
 }
 clientPromise = global._mongoClientPromise;
 
-export async function GET(request, { params }) {
-    const id = params.id;
+export async function GET(request, context) {
+    const { id } = await context.params; // <-- Get id from context.params
     try {
         const client = await clientPromise;
         const db = client.db(dbName);
         const collection = db.collection('Problems');
 
-        const problem = await collection.findOne({ id: params.id });
+        const problem = await collection.findOne({ id }); // Use id directly
 
         if (!problem) {
             return new Response(
