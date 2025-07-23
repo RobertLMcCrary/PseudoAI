@@ -84,8 +84,6 @@ function Home() {
     const viewportWidth = useViewportWidth();
     const [code, setCode] = useState(demoTwoSum.starterCodes.python);
 
-    if (!isLoaded) return null; // or a loading spinner
-
     const [isRunning, setIsRunning] = useState(false);
     const [results, setResults] = useState(null);
     const [selectedLanguage, setSelectedLanguage] = useState('python');
@@ -100,6 +98,7 @@ function Home() {
     //top users for the leaderboard section
     const [topUsers, setTopUsers] = useState([]);
 
+    if (!isLoaded) return null; // or a loading spinner
     //get top 3 users for the leaderboard section
     useEffect(() => {
         const fetchTopUsers = async () => {
