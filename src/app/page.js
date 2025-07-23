@@ -81,12 +81,11 @@ const demoTwoSum = {
 
 function Home() {
     const { isLoaded } = useAuth();
-    if (!isLoaded) return null; // or a loading spinner
-    //state management for screen width
     const viewportWidth = useViewportWidth();
-
-    //state management for the demo code editor
     const [code, setCode] = useState(demoTwoSum.starterCodes.python);
+
+    if (!isLoaded) return null; // or a loading spinner
+
     const [isRunning, setIsRunning] = useState(false);
     const [results, setResults] = useState(null);
     const [selectedLanguage, setSelectedLanguage] = useState('python');
