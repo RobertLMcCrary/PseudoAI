@@ -98,7 +98,6 @@ function Home() {
     //top users for the leaderboard section
     const [topUsers, setTopUsers] = useState([]);
 
-    if (!isLoaded) return null; // or a loading spinner
     //get top 3 users for the leaderboard section
     useEffect(() => {
         const fetchTopUsers = async () => {
@@ -237,6 +236,7 @@ function Home() {
             setLoading(false);
         }
     };
+    if (!isLoaded) return null; // or a loading spinner
 
     return (
         <div className="bg-gray-900 text-white min-h-screen">
