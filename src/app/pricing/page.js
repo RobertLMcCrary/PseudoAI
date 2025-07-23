@@ -37,8 +37,9 @@ function Pricing() {
                             'Realistic Mock Interview Simulation',
                             'Live Code Editing With Friends',
                         ]}
-                        buttonText="Comming Soon"
+                        buttonText="Coming Soon"
                         buttonStyle="bg-purple-600 text-white hover:bg-purple-500"
+                        link="/checkout"
                     />
                 </section>
             </main>

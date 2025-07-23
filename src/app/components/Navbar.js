@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense} from 'react';
 import Link from 'next/link';
 import {
     SignedIn,
@@ -53,6 +53,7 @@ function Navbar() {
                 </Link>
 
                 {/* Navigation Links if signed in */}
+                <Suspense fallback={<div className="h-8 w-20 bg-gray-700 animate-pulse rounded"></div>}>
                 <SignedIn>
                     <div className="space-x-6 flex items-center">
                         <Link href="/">
@@ -111,6 +112,7 @@ function Navbar() {
                         </SignInButton>
                     </div>
                 </SignedOut>
+                </Suspense>
             </div>
         </nav>
     );

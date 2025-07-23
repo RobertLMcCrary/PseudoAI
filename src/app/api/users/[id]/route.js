@@ -33,16 +33,28 @@ export async function PUT(request, { params }) {
 
 export async function GET(request, { params }) {
     const id = await params.id;
-    const client = await MongoClient.connect(process.env.MONGO_URI);
-    const db = client.db('PseudoAI');
-    const Users = db.collection('Users');
+    if (!id) {
+        // This check is good practice, though for a dynamic route like [id],
+        // 'id' should always be present.
+        return NextResponse.json({ error: 'User ID is missing.' }, { status: 400 });
+    }
+    let client; // Declare client outside try-catch for finally block access
+    try {
+        client = await MongoClient.connect(process.env.MONGO_URI);
+        const db = client.db('PseudoAI'); // Replace with your database name
+        const Users = db.collection('Users'); // Replace with your collection name
 
-    const userData = await Users.findOne({ clerkId: id });
+        const userData = await Users.findOne({ clerkId: id });
 
-    await client.close();
+        // Using NextResponse.json is the recommended way to return JSON from App Router API routes
+        return NextResponse.json(userData, { status: 200 });
 
-    return new Response(JSON.stringify(userData), {
-        headers: { 'Content-Type': 'application/json' },
-        status: 200,
-    });
+    } catch (error) {
+        console.error('Error in GET /api/users/[id]:', error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    } finally {
+        if (client) {
+            await client.close();
+        }
+    }
 }

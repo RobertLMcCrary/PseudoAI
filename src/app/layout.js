@@ -18,6 +18,7 @@ import {
 import { useAuth } from '@clerk/nextjs';
 
 import { Toaster } from 'react-hot-toast';
+import StripeProviderWrapper from '@/components/StripeProviderWrapper';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -39,6 +40,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <ClerkProvider>
+            <StripeProviderWrapper>
             <html lang="en">
                 <head>
                     <link rel="icon" href="/favicon.ico" />
@@ -56,6 +58,7 @@ export default function RootLayout({ children }) {
                     ></script>
                 </body>
             </html>
+            </StripeProviderWrapper>
         </ClerkProvider>
     );
 }

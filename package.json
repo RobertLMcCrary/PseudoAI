@@ -20,6 +20,8 @@
     "@eslint/config-array": "^0.19.1",
     "@huggingface/inference": "^2.8.1",
     "@prisma/client": "^5.22.0",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.3.1",
     "@uiw/codemirror-theme-vscode": "^4.23.6",
     "@uiw/react-codemirror": "^4.23.6",
     "@vercel/analytics": "^1.4.1",
@@ -50,6 +52,7 @@
     "rimraf": "^6.0.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
+    "stripe": "^18.1.1",
     "svix": "^1.42.0",
     "uuid": "^11.0.3"
   },
