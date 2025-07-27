@@ -4,9 +4,18 @@
 import { render, screen } from '@testing-library/react';
 import About from './page';
 
-// Mock Navbar and Footer to avoid rendering their internals
-jest.mock('../components/Navbar', () => () => <nav data-testid="navbar" />);
-jest.mock('../components/Footer', () => () => <footer data-testid="footer" />);
+// Mock Navbar and Footer with display names to avoid ESLint errors
+jest.mock('../components/Navbar', () => {
+  const MockNavbar = () => <nav data-testid="navbar" />;
+  MockNavbar.displayName = 'MockNavbar';
+  return MockNavbar;
+});
+
+jest.mock('../components/Footer', () => {
+  const MockFooter = () => <footer data-testid="footer" />;
+  MockFooter.displayName = 'MockFooter';
+  return MockFooter;
+});
 
 describe('About Page', () => {
   it('renders the main heading', () => {
