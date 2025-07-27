@@ -14,15 +14,13 @@ clientPromise = global._mongoClientPromise;
 
 export async function GET(request) {
     try {
-        // Wait for the MongoDB client to connect
-        const client = await clientPromise;
+        const client = await (new MongoClient(uri)).connect();
         const db = client.db(dbName);
         const collection = db.collection('Problems');
 
-        // Fetch problems from the collection
         const problems = await collection.find({}).toArray();
 
-        // Return the data as a JSON response
+        await client.close();
         return new Response(JSON.stringify(problems), {
             headers: { 'Content-Type': 'application/json' },
             status: 200,
