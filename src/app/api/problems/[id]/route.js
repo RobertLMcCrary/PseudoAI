@@ -12,13 +12,13 @@ if (!global._mongoClientPromise) {
 clientPromise = global._mongoClientPromise;
 
 export async function GET(request, context) {
-    const { id } = await context.params; // <-- Get id from context.params
+    const { id } = context.params;
     try {
-        const client = await clientPromise;
+        const client = await (new MongoClient(uri)).connect();
         const db = client.db(dbName);
         const collection = db.collection('Problems');
 
-        const problem = await collection.findOne({ id }); // Use id directly
+        const problem = await collection.findOne({ id });
 
         if (!problem) {
             return new Response(
@@ -30,6 +30,7 @@ export async function GET(request, context) {
             );
         }
 
+        await client.close();
         return new Response(JSON.stringify(problem), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
