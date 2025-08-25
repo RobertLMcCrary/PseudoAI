@@ -35,6 +35,31 @@ export default function ProblemPage() {
     const [response, setResponse] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const initialSystemMessage = (problem, selectedLanguage) => ({
+        role: 'system',
+        content: `
+            You are a concise, helpful coding mentor. The user is solving a LeetCode-style problem and will provide their code and test results. Your job is to guide them step by step — never give a full solution or complete code.
+
+            ### Rules:
+            - Ask leading questions to help them think.
+            - Suggest strategies (e.g., "Try using a hash map"), not solutions.
+            - Explain relevant concepts clearly and briefly.
+            - Help debug only what they show you.
+            - Give syntax help if asked (code snippets OK).
+            - Mention edge cases they might overlook.
+            - Keep responses to 1 paragraph maximum.
+            - Do not output more than 300 tokens.
+
+            ### Context:
+            Problem: ${problem?.title}
+            Difficulty: ${problem?.difficulty}
+            Language: ${selectedLanguage}
+            Starter code provided. User has submitted a solution and test cases have been run.
+
+            Begin mentoring.
+            `,
+    });
+
     //state management for code editor
     const [code, setCode] = useState('');
     const [isRunning, setIsRunning] = useState(false);
@@ -84,10 +109,16 @@ export default function ProblemPage() {
                 .then((data) => {
                     console.log('Received data:', data);
                     setProblem(data);
+                    // Initialize messages only once when problem data is available
+                    if (messages.length === 0) {
+                        setMessages([
+                            initialSystemMessage(data, selectedLanguage),
+                        ]);
+                    }
                 })
                 .catch((error) => console.error('Error:', error));
         }
-    }, [params.id]);
+    }, [params.id, selectedLanguage]); // Add selectedLanguage to dependencies
 
     //fetch the notes for the current problem when the page loads
     useEffect(() => {
@@ -135,44 +166,33 @@ export default function ProblemPage() {
     const handleUserInput = async (e) => {
         e.preventDefault();
         if (userInput.trim()) {
-            const systemMessage = {
-                role: 'system',
-                content: `You are a coding mentor helping the user solve the LeetCode problem "${problem?.title}". Do not provide all the information at once—answer step by step based on the user's input and maintain brevity.
-                         Your primary role is to guide the user step by step without directly providing a complete solution or code. NEVER provide the direct solution ever. 
-                         Follow these guidelines but remember, be concise and uncluttered in your responses. 
-                         1. Provide hints and ask leading questions: Help the user break the problem into smaller parts and think critically about their approach.
-                         2. Explain relevant concepts: Focus on the key ideas and logic needed to understand and solve the problem.
-                         3. Suggest strategies, not solutions: Offer general approaches, like using specific data structures or algorithms, without writing the code for them
-                         4. Redirect solution requests: If asked for the solution, remind the user of your mentoring role and guide them back to problem-solving.
-                         5. Motivate and affirm progress: Provide encouragement and acknowledge their efforts to keep them engaged.
-                         6. Encourage incremental solutions: Suggest building and testing small chunks of code to validate progress.
-                         7. Guide debugging efforts: Ask questions to help the user identify and resolve issues in their code.
-                         8. Highlight edge cases: Encourage the user to consider and handle unusual scenarios, such as empty inputs or large datasets.
-                         9. Dont give irrelevant information 
-                         10. Again be concise there should never be more than a paragraph of text in all your responses.
+            const userMessageContent = `
+                User Query: ${userInput}
 
-                         IMPORTANT NOTE: If the user asks for syntax help give them code snippets and explain how to do what ever they are asking.
-                         EXAMPLE: if a user forgets how to make an array in python with a specific length you can give them a code snippet on how to do it and explain it.
+                ---
+                Current Code:
+                \`\`\`${selectedLanguage}
+                ${code}
+                \`\`\`
 
-                         - If the user asks for pseudo code provide it, don't be specific with syntax and keep the pseudo code simple.
-                         - If the user asks what the next step is on their solution and they are already on the right track, tell them what to do next.
-                         
-                         Problem Context:
-                         ${problem?.description}
-                         Difficulty: ${problem?.difficulty}
-                         Topics: ${problem?.topics}
-                         Starter Code: ${problem?.starterCodes[selectedLanguage]}
-                         User Code: ${code}
-                         Language: ${selectedLanguage}
-                         Test Cases Results: ${results}}`,
-            };
+                ---
+                Test Results:
+                \`\`\`json
+                ${JSON.stringify(results, null, 2)}
+                \`\`\`
+            `;
 
-            const userMessage = { role: 'user', content: userInput };
-            setMessages((prevMessages) => [...prevMessages, userMessage]);
+            const displayUserMessage = { role: 'user', content: userInput };
+            const messageToSend = { role: 'user', content: userMessageContent };
+
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                displayUserMessage,
+            ]);
             setUserInput('');
             setLoading(true);
 
-            // Create temporary message for streaming
+            //create temporary message for streaming
             const tempMessage = { role: 'assistant', content: '' };
             setMessages((prevMessages) => [...prevMessages, tempMessage]);
 
@@ -183,12 +203,24 @@ export default function ProblemPage() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        messages: [...messages, systemMessage, userMessage],
+                        // Send all messages in state, including the initial system message if present
+                        messages: [...messages, messageToSend],
                     }),
                 });
 
-                if (!res.ok)
-                    throw new Error(`HTTP error! status: ${res.status}`);
+                if (!res.ok) {
+                    if (res.status === 429) {
+                        const errorData = await res.json();
+                        toast.error(errorData.error);
+                        // Remove the temporary message if rate limited
+                        setMessages((prevMessages) =>
+                            prevMessages.slice(0, prevMessages.length - 1)
+                        );
+                        return; // Stop further processing
+                    } else {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                }
 
                 const reader = res.body.getReader();
                 let accumulatedContent = '';
