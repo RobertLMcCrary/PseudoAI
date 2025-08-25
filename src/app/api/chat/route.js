@@ -45,14 +45,22 @@ export async function POST(req) {
             stream: true,
         });
 
+        // Handle streaming in a try-catch to ensure writer is closed
         (async () => {
-            for await (const chunk of response) {
-                const content = chunk.choices?.[0]?.delta?.content;
-                if (content) {
-                    await writer.write(encoder.encode(content));
+            try {
+                for await (const chunk of response) {
+                    if (chunk.choices && chunk.choices.length > 0) {
+                        const newContent = chunk.choices[0].delta.content;
+                        if (newContent) {
+                            await writer.write(encoder.encode(newContent));
+                        }
+                    }
                 }
+            } catch (streamError) {
+                console.error('Error during streaming:', streamError);
+            } finally {
+                await writer.close();
             }
-            await writer.close();
         })();
 
         return new Response(stream.readable, {
