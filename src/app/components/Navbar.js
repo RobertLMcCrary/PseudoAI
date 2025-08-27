@@ -1,12 +1,8 @@
 'use client';
 import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import {
-    SignedIn,
-    SignedOut,
-    SignInButton,
-    UserButton,
-} from '@clerk/nextjs';
+import Image from 'next/image';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import { useUser } from '@clerk/nextjs';
 
 function Navbar() {
@@ -58,14 +54,25 @@ function Navbar() {
         <nav className="bg-gradient-to-r from-blue-500 to-purple-700 p-4 shadow-lg">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
-                <Link href="/">
+                <Link href="/" className="flex items-center space-x-2">
+                    <Image
+                        src="/PseudoAI-Logo.png"
+                        alt="PseudoAI Logo"
+                        width={50}
+                        height={50}
+                        className="rounded-full"
+                    />
                     <span className="text-2xl font-bold text-white hover:text-gray-200 transition">
                         PseudoAI
                     </span>
                 </Link>
 
                 {/* Navigation Links */}
-                <Suspense fallback={<div className="h-8 w-20 bg-gray-700 animate-pulse rounded"></div>}>
+                <Suspense
+                    fallback={
+                        <div className="h-8 w-20 bg-gray-700 animate-pulse rounded"></div>
+                    }
+                >
                     <SignedIn>
                         <div className="space-x-6 flex items-center">
                             <Link href="/">

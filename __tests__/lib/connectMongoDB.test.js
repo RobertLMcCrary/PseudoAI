@@ -11,10 +11,10 @@ describe('Connecting to MongoDB', () => {
     let consoleLogSpy, consoleErrorSpy;
 
     beforeEach(() => {
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => { });
         consoleErrorSpy = jest
             .spyOn(console, 'error')
-            .mockImplementation(() => {});
+            .mockImplementation(() => { });
         process.exit = jest.fn(); // Mock process.exit
     });
 
