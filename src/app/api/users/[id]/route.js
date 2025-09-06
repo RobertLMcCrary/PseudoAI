@@ -37,7 +37,10 @@ export async function GET(request, context) {
     if (!id) {
         // This check is good practice, though for a dynamic route like [id],
         // 'id' should always be present.
-        return NextResponse.json({ error: 'User ID is missing.' }, { status: 400 });
+        return NextResponse.json(
+            { error: 'User ID is missing.' },
+            { status: 400 }
+        );
     }
     let client; // Declare client outside try-catch for finally block access
     try {
@@ -49,10 +52,12 @@ export async function GET(request, context) {
 
         // Using NextResponse.json is the recommended way to return JSON from App Router API routes
         return NextResponse.json(userData, { status: 200 });
-
     } catch (error) {
         console.error('Error in GET /api/users/[id]:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json(
+            { error: 'Internal Server Error' },
+            { status: 500 }
+        );
     } finally {
         if (client) {
             await client.close();
