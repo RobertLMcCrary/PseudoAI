@@ -364,14 +364,13 @@ function Home() {
                                 >
                                     {messages.map((message, index) =>
                                         message.role === 'user' ||
-                                        message.role === 'assistant' ? (
+                                            message.role === 'assistant' ? (
                                             <div
                                                 key={index}
-                                                className={`mb-4 ${
-                                                    message.role === 'user'
-                                                        ? 'text-blue-400'
-                                                        : 'text-gray-300'
-                                                }`}
+                                                className={`mb-4 ${message.role === 'user'
+                                                    ? 'text-blue-400'
+                                                    : 'text-gray-300'
+                                                    }`}
                                             >
                                                 <div className="font-bold mb-1">
                                                     {message.role === 'user'
@@ -422,18 +421,18 @@ function Home() {
                                                                     {message.content.includes(
                                                                         "Here's the pseudocode"
                                                                     ) && (
-                                                                        <button
-                                                                            onClick={() =>
-                                                                                navigator.clipboard.writeText(
-                                                                                    message.content
-                                                                                )
-                                                                            }
-                                                                            className="mt-2 px-3 py-1 bg-gray-700 text-sm text-gray-300 rounded hover:bg-gray-600"
-                                                                        >
-                                                                            Copy
-                                                                            Pseudocode
-                                                                        </button>
-                                                                    )}
+                                                                            <button
+                                                                                onClick={() =>
+                                                                                    navigator.clipboard.writeText(
+                                                                                        message.content
+                                                                                    )
+                                                                                }
+                                                                                className="mt-2 px-3 py-1 bg-gray-700 text-sm text-gray-300 rounded hover:bg-gray-600"
+                                                                            >
+                                                                                Copy
+                                                                                Pseudocode
+                                                                            </button>
+                                                                        )}
                                                                 </div>
                                                             );
                                                         },

@@ -132,11 +132,10 @@ export default function CodeEditor({
                     {results.map((result, index) => (
                         <div
                             key={index}
-                            className={`p-2 mb-2 rounded ${
-                                result.passed
-                                    ? 'bg-green-900/50 text-green-200'
-                                    : 'bg-red-900/50 text-red-200'
-                            }`}
+                            className={`p-2 mb-2 rounded ${result.passed
+                                ? 'bg-green-900/50 text-green-200'
+                                : 'bg-red-900/50 text-red-200'
+                                }`}
                         >
                             <div className="font-semibold flex items-center gap-2">
                                 <span>Test Case {result.testCase}:</span>

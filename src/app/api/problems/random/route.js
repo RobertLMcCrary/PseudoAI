@@ -9,7 +9,6 @@ export async function GET() {
         const db = client.db(dbName);
         const collection = db.collection('Problems');
 
-        // Get random problem
         const problems = await collection
             .aggregate([{ $sample: { size: 1 } }])
             .toArray();

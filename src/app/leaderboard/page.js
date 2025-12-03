@@ -96,15 +96,14 @@ function LeaderboardPage() {
                                 >
                                     <div className="col-span-1">
                                         <span
-                                            className={`text-xl font-bold ${
-                                                globalRank === 1
-                                                    ? 'text-yellow-400'
-                                                    : globalRank === 2
+                                            className={`text-xl font-bold ${globalRank === 1
+                                                ? 'text-yellow-400'
+                                                : globalRank === 2
                                                     ? 'text-gray-400'
                                                     : globalRank === 3
-                                                    ? 'text-amber-700'
-                                                    : ''
-                                            }`}
+                                                        ? 'text-amber-700'
+                                                        : ''
+                                                }`}
                                         >
                                             #{globalRank}
                                         </span>

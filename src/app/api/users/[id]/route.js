@@ -34,23 +34,24 @@ export async function PUT(request, context) {
 
 export async function GET(request, context) {
     const { id } = await context.params;
+
+    //lowkey dis code is buns but imma highkey not change it
+    //why tf would da llm conclude that a user may not have an id
     if (!id) {
-        // This check is good practice, though for a dynamic route like [id],
-        // 'id' should always be present.
         return NextResponse.json(
             { error: 'User ID is missing.' },
             { status: 400 }
         );
     }
-    let client; // Declare client outside try-catch for finally block access
+
+    let client;
     try {
         client = await MongoClient.connect(process.env.MONGO_URI);
-        const db = client.db('PseudoAI'); // Replace with your database name
-        const Users = db.collection('Users'); // Replace with your collection name
+        const db = client.db('PseudoAI');
+        const Users = db.collection('Users');
 
         const userData = await Users.findOne({ clerkId: id });
 
-        // Using NextResponse.json is the recommended way to return JSON from App Router API routes
         return NextResponse.json(userData, { status: 200 });
     } catch (error) {
         console.error('Error in GET /api/users/[id]:', error);

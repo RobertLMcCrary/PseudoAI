@@ -12,7 +12,6 @@ export const executeCppCode = async (code, functionCall, testCases) => {
                 },
             };
 
-            // Prepare full code with necessary includes and function call
             const fullCode = `
 #include <iostream>
 #include <vector>
@@ -25,15 +24,14 @@ int main() {
   return 0;
 }`;
 
-            // Execute the code
             JSCPP.run(fullCode, JSON.stringify(testCase.input), config);
 
             return {
                 testCase: index + 1,
-                passed: true, // You'll need to determine this based on the output
+                passed: true,
                 input: testCase.input,
                 expected: testCase.output,
-                received: null, // Update this based on your function call results
+                received: null,
                 stdout: stdout,
             };
         } catch (error) {

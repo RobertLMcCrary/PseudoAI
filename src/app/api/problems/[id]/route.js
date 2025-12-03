@@ -14,6 +14,7 @@ clientPromise = global._mongoClientPromise;
 export async function GET(request, context) {
     const { id } = context.params;
     try {
+        //const client = clientPromise;
         const client = await (new MongoClient(uri)).connect();
         const db = client.db(dbName);
         const collection = db.collection('Problems');

@@ -469,22 +469,20 @@ export default function ProblemPage() {
                     <div className="flex gap-2 mb-4">
                         <button
                             onClick={() => setActiveTab('code')}
-                            className={`px-4 py-2 rounded ${
-                                activeTab === 'code'
-                                    ? 'bg-purple-700 text-white'
-                                    : 'bg-gray-700 text-gray-200'
-                            }`}
+                            className={`px-4 py-2 rounded ${activeTab === 'code'
+                                ? 'bg-purple-700 text-white'
+                                : 'bg-gray-700 text-gray-200'
+                                }`}
                         >
                             Code Editor
                         </button>
 
                         <button
                             onClick={() => setActiveTab('notes')}
-                            className={`px-4 py-2 rounded ${
-                                activeTab === 'notes'
-                                    ? 'bg-purple-700 text-white'
-                                    : 'bg-gray-700 text-gray-200'
-                            }`}
+                            className={`px-4 py-2 rounded ${activeTab === 'notes'
+                                ? 'bg-purple-700 text-white'
+                                : 'bg-gray-700 text-gray-200'
+                                }`}
                         >
                             Notes
                         </button>
@@ -529,14 +527,13 @@ export default function ProblemPage() {
                     <div className="flex-grow mt-4 overflow-y-auto bg-gray-900 p-4 rounded border border-gray-700">
                         {messages.map((message, index) =>
                             message.role === 'user' ||
-                            message.role === 'assistant' ? (
+                                message.role === 'assistant' ? (
                                 <div
                                     key={index}
-                                    className={`mb-4 ${
-                                        message.role === 'user'
-                                            ? 'text-blue-400'
-                                            : 'text-gray-300'
-                                    }`}
+                                    className={`mb-4 ${message.role === 'user'
+                                        ? 'text-blue-400'
+                                        : 'text-gray-300'
+                                        }`}
                                 >
                                     <div className="font-bold mb-1">
                                         {message.role === 'user'
@@ -576,17 +573,17 @@ export default function ProblemPage() {
                                                         {message.content.includes(
                                                             "Here's the pseudocode"
                                                         ) && (
-                                                            <button
-                                                                onClick={() =>
-                                                                    navigator.clipboard.writeText(
-                                                                        message.content
-                                                                    )
-                                                                }
-                                                                className="mt-2 px-3 py-1 bg-gray-700 text-sm text-gray-300 rounded hover:bg-gray-600"
-                                                            >
-                                                                Copy Pseudocode
-                                                            </button>
-                                                        )}
+                                                                <button
+                                                                    onClick={() =>
+                                                                        navigator.clipboard.writeText(
+                                                                            message.content
+                                                                        )
+                                                                    }
+                                                                    className="mt-2 px-3 py-1 bg-gray-700 text-sm text-gray-300 rounded hover:bg-gray-600"
+                                                                >
+                                                                    Copy Pseudocode
+                                                                </button>
+                                                            )}
                                                     </div>
                                                 );
                                             },

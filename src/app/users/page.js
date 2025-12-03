@@ -70,11 +70,10 @@ function UsersPage() {
                                             {user.username}
                                         </h3>
                                         <p className="text-sm text-gray-400">
-                                            {`Total Solved: ${
-                                                user.problemsSolved.easy +
+                                            {`Total Solved: ${user.problemsSolved.easy +
                                                 user.problemsSolved.medium +
                                                 user.problemsSolved.hard
-                                            }`}
+                                                }`}
                                         </p>
                                     </div>
                                 </div>

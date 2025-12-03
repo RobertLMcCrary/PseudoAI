@@ -14,11 +14,11 @@ const redis = new Redis({
 
 const ratelimit = new Ratelimit({
     redis: redis,
-    limiter: Ratelimit.fixedWindow(1, '60s'), // 1 request per 60 seconds
+    limiter: Ratelimit.fixedWindow(1, '60s'),
 });
 
 export async function POST(req) {
-    const ip = req.headers.get('x-forwarded-for') || '127.0.0.1'; // Fallback to localhost for local development
+    const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
     const { success, pending, limit, reset, remaining } = await ratelimit.limit(
         ip
     );
@@ -34,9 +34,7 @@ export async function POST(req) {
 
     const { messages } = await req.json();
     const encoder = new TextEncoder();
-    const stream = new TransformStream();
-    const writer = stream.writable.getWriter();
-
+    const stream = new TransformStream(); const writer = stream.writable.getWriter();
     try {
         const response = await openai.chat.completions.create({
             model: 'gpt-4',
